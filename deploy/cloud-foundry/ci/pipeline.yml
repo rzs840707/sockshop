@@ -33,7 +33,11 @@ groups:
 - name: orders-jobs
   jobs:
   - build-orders
+  - build-orders-test-image
   - deploy-orders-to-development
+  - execute-orders-functional-tests
+  - deploy-orders-to-loadtest
+  - execute-orders-loadtests
 
 - name: payment-jobs
   jobs:
@@ -165,6 +169,14 @@ resources:
   type: docker-image
   source:
     repository: jbraeuer/orders
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+
+- name: orders-test-image
+  type: docker-image
+  source:
+    repository: jbraeuer/orders-test
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -489,7 +501,8 @@ jobs:
         args:
         - -exc
         - |
-          jmeter -n -t test/load/loadtest_user.jmx
+          jmeter -Dduration=300 -n -t test/load/get_endpoints.jmx
+          
 
 # CATALOGUE
 
@@ -609,6 +622,17 @@ jobs:
       build: workspace
       cache_tag: latest
 
+- name: build-orders-test-image
+  serial: true
+  public: true
+  plan:
+  - get: git-orders
+    trigger: false
+  - put: orders-test-image
+    params:
+      build: git-orders/test
+      cache_tag: latest
+
 - name: deploy-orders-to-development
   serial: true
   public: true
@@ -620,6 +644,70 @@ jobs:
   - put: pcf-production
     params:
       manifest: git-orders/manifest.yml
+
+- name: execute-orders-functional-tests
+  serial: true
+  public: true
+  plan:
+  - aggregate:
+    - get: git-orders
+      trigger: true
+      passed:
+        - deploy-orders-to-development
+    - get: orders-test-image
+      passed:
+        - build-orders-test-image
+  - task: run-functional-tests
+    image: orders-test-image
+    config:
+      platform: linux
+      inputs:
+      - name: git-orders
+      run:
+        dir: git-orders
+        path: /bin/sh
+        args:
+        - -exc
+        - |
+          mvn -q test
+          
+- name: deploy-orders-to-loadtest
+  serial: true
+  public: true
+  plan:
+  - get: git-orders
+    trigger: true
+    passed:
+      - execute-orders-functional-tests
+  - put: pcf-production
+    params:
+      manifest: git-orders/manifest.yml
+
+- name: execute-orders-loadtests
+  serial: true
+  public: true
+  plan:
+  - aggregate:
+    - get: git-orders
+      #trigger: true
+      #passed:
+      #  - deploy-orders-to-loadtest
+    - get: orders-test-image
+      passed:
+        - build-orders-test-image
+  - task: run-functional-tests
+    image: orders-test-image
+    config:
+      platform: linux
+      inputs:
+      - name: git-orders
+      run:
+        dir: git-orders
+        path: /bin/sh
+        args:
+        - -exc
+        - |
+          jmeter -Dduration=300 -n -t test/load/get_endpoints.jmx
 
 ## PAYMNET
 
