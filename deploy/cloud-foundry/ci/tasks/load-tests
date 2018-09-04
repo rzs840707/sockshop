@@ -10,7 +10,7 @@ else
 export LOAD_URL=http://$PCF_APP_SUFFIX.$PCF_APP_DOMAIN/
 fi
 
-echo "Running artillery load tests against $LOAD_URL..."
+echo "Running jmeter load tests against $LOAD_URL..."
 
 #artillery quick --duration 10 --rate 10 $NEXT_APP_URL
 #artillery run -t $LOAD_URL ./PivotalDevOpsTutorial/ci/tasks/artillery-script.yml
