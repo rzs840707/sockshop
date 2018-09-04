@@ -579,6 +579,8 @@ jobs:
     trigger: true
     passed:
       - execute-user-load-tests
+  - get: git-pipeline
+    trigger: false      
   - task: get-current-app-color
     file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
     params:

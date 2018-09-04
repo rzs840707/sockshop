@@ -17,4 +17,4 @@ inputs:
 - name: current-app-info
 
 run:
-  path: ./PivotalDevOpsTutorial/ci/tasks/remove-routes
+  path: ./git-pipeline/deploy/cloud-foundry/ci/tasks/remove-routes
