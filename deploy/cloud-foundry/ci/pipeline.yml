@@ -116,6 +116,10 @@ resources:
     branch: master
     uri: https://github.com/dynatrace-sockshop/queue-master.git
 
+- name: dynatrace-resource
+  type: docker-image
+  source:
+    repository: mvilliger/dynatrace-resource
 # Docker Images
 
 - name: front-end-image
@@ -459,6 +463,11 @@ jobs:
       PCF_APP_SUFFIX: ((pcf-stage-user-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
       APP_REPO: git-user
+  - put: dynatrace
+    params:
+      monspecserviceenvironment: User/Staging
+      pipelinetaskname: deploy-user-to-stage
+      deployversion: v1.5      
   - put: pcf-stage
     params:
       manifest: app-manifest-output/manifest.yml  
@@ -505,6 +514,11 @@ jobs:
       PCF_APP_SUFFIX: ((pcf-prod-user-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
       APP_REPO: git-user
+  - put: dynatrace
+    params:
+      monspecserviceenvironment: user/Staging
+      pipelinetaskname: deploy-user-to-prod
+      deployversion: v1.5        
   - put: pcf-production
     params:
         manifest: app-manifest-output/manifest.yml 
@@ -737,9 +751,9 @@ jobs:
   plan:
   - aggregate:
     - get: git-orders
-      #trigger: true
-      #passed:
-      #  - deploy-orders-to-loadtest
+      trigger: true
+      passed:
+       - deploy-orders-to-loadtest
     - get: orders-test-image
       passed:
         - build-orders-test-image
