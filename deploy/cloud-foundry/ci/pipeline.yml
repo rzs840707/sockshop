@@ -58,6 +58,11 @@ groups:
 resources:
 
 # GitHub Repositories
+- name: git-pipeline
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/dynatrace-sockshop/sockshop.git
 
 - name: git-front-end
   type: git
@@ -420,6 +425,8 @@ jobs:
   serial: true
   public: true
   plan:
+  - get: git-pipeline
+    trigger: false
   - get: git-user
     trigger: true
     passed:
@@ -463,6 +470,8 @@ jobs:
   serial: true
   public: true
   plan:
+  - get: git-pipeline
+    trigger: false
   - get: git-user
     trigger: true
     passed:
