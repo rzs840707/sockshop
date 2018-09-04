@@ -476,7 +476,8 @@ jobs:
     params:
       monspecserviceenvironment: user/Staging
       pipelinetaskname: deploy-user-to-stage
-      deployversion: v1.5      
+      deployversion: v1.5
+      APP_REPO: git-user 
   - put: pcf-stage
     params:
       manifest: app-manifest-output/manifest.yml  
