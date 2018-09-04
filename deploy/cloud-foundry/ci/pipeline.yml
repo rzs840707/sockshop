@@ -39,6 +39,7 @@ groups:
   - execute-orders-functional-tests
   - deploy-orders-to-prod
   - execute-orders-loadtests
+  - promote-new-version-orders
 
 - name: payment-jobs
   jobs:
@@ -598,7 +599,8 @@ jobs:
       PCF_ORG: ((pcf-prod-organization))
       PCF_USER: ((pcf-prod-deploy-username))
       PCF_PWD: ((pcf-prod-deploy-password))
-      PCF_SPACE: ((pcf-prod-space))                 
+      PCF_SPACE: ((pcf-prod-space))
+      PCF_APP_DOMAIN: ((pcf-prod-app-domain))              
 
 # CATALOGUE
 
@@ -796,7 +798,17 @@ jobs:
     params:
       PCF_APP_SUFFIX: ((pcf-prod-orders-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
-      APP_REPO: git-orders  
+      APP_REPO: git-orders
+      PRODUCTION: true
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))              
   - put: dynatrace
     params:
       monspecserviceenvironment: orders/Production
@@ -831,7 +843,37 @@ jobs:
         args:
         - -exc
         - |
-          jmeter -Dduration=300 -n -t test/load/get_endpoints.jmx
+          jmeter -Dduration=30 -n -t test/load/get_endpoints.jmx
+
+- name: promote-new-version-orders
+  serial: true
+  public: true
+  plan:
+  - get: git-orders
+    trigger: true
+    passed:
+      - execute-orders-loadtests
+  - get: git-pipeline
+    trigger: false      
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))   
+  - task: switch-app-routes
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/update-routes.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))
+      PCF_APP_DOMAIN: ((pcf-prod-app-domain))    
 
 ## PAYMENT
 
