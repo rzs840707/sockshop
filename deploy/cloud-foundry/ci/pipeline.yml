@@ -202,7 +202,7 @@ resources:
 - name: pcf-stage
   type: cf
   source:
-    api: ((pcf-api))
+    api: ((pcf-stage-api))
     username: ((pcf-stage-deploy-username))
     password: ((pcf-stage-deploy-password))
     organization: ((pcf-stage-organization))
@@ -212,7 +212,7 @@ resources:
 - name: pcf-production
   type: cf
   source:
-    api: ((pcf-api))
+    api: ((pcf-prod-api))
     username: ((pcf-prod-deploy-username))
     password: ((pcf-prod-deploy-password))
     organization: ((pcf-prod-organization))
