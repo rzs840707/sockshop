@@ -10,6 +10,9 @@ image_resource:
 inputs:
 - name: git-pipeline
 - name: git-user
+  optional: true
+- name: git-order
+  optional: true
 - name: current-app-info
   optional: true
 

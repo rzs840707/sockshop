@@ -425,17 +425,18 @@ jobs:
   serial: true
   public: true
   plan:
-  - get: git-pipeline
-    trigger: false
   - get: git-user
     trigger: true
     passed:
       - build-user
+  - get: git-pipeline
+    trigger: false      
   - task: prepare-app-manifest
     file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
       PCF_APP_SUFFIX: ((pcf-stage-user-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
+      APP_REPO: git-user
   - put: pcf-stage
     params:
       manifest: app-manifest-output/manifest.yml  
@@ -481,6 +482,7 @@ jobs:
     params:
       PCF_APP_SUFFIX: ((pcf-prod-user-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
+      APP_REPO: git-user
   - put: pcf-production
     params:
         manifest: app-manifest-output/manifest.yml 
@@ -648,7 +650,15 @@ jobs:
   - get: git-orders
     trigger: true
     passed:
-      - build-orders  
+      - build-orders
+  - get: git-pipeline
+    trigger: false      
+  - task: prepare-app-manifest
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-stage-user-suffix)) 
+      DOCKER_HUB_ACCOUNT: ((docker-hub-username))
+      APP_REPO: git-orders     
   - put: pcf-stage
     params:
       manifest: git-orders/manifest.yml
@@ -687,6 +697,14 @@ jobs:
     trigger: true
     passed:
       - execute-orders-functional-tests
+  - get: git-pipeline
+    trigger: false      
+  - task: prepare-app-manifest
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-stage-user-suffix)) 
+      DOCKER_HUB_ACCOUNT: ((docker-hub-username))
+      APP_REPO: git-orders      
   - put: pcf-production
     params:
       manifest: git-orders/manifest.yml
