@@ -59,6 +59,14 @@ groups:
   - init-dynatrace-user
   - init-dynatrace-orders
 
+
+resource_types:
+- name: dynatrace-resource
+  type: docker-image
+  source:
+    repository: mvilliger/dynatrace-resource
+
+
 resources:
 
 # GitHub Repositories
@@ -116,10 +124,11 @@ resources:
     branch: master
     uri: https://github.com/dynatrace-sockshop/queue-master.git
 
-- name: dynatrace-resource
-  type: docker-image
+- name: dynatrace
+  type: dynatrace-resource
   source:
-    repository: mvilliger/dynatrace-resource
+    apitoken: ((apitoken))
+    tenanthost: ((tenanthost))
 # Docker Images
 
 - name: front-end-image
@@ -753,7 +762,7 @@ jobs:
     - get: git-orders
       trigger: true
       passed:
-       - deploy-orders-to-loadtest
+       - deploy-orders-to-prod
     - get: orders-test-image
       passed:
         - build-orders-test-image
