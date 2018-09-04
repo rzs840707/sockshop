@@ -16,4 +16,4 @@ outputs:
 - name: app-manifest-output
 
 run:
-  path: ./sockshop/deploy/cloud-foundry/ci/tasks/app-manifest-prep
+  path: ./git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep

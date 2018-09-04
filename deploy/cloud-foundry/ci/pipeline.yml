@@ -432,9 +432,9 @@ jobs:
     passed:
       - build-user
   - task: prepare-app-manifest
-    file: sockshop/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
-      PCF_APP_SUFFIX: ((pcf-stage-app-suffix)) 
+      PCF_APP_SUFFIX: ((pcf-stage-user-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
   - put: pcf-stage
     params:
@@ -470,16 +470,16 @@ jobs:
   serial: true
   public: true
   plan:
-  - get: git-pipeline
-    trigger: false
   - get: git-user
     trigger: true
     passed:
-        - execute-user-functional-tests  
+        - execute-user-functional-tests 
+  - get: git-pipeline
+    trigger: false         
   - task: prepare-app-manifest
-    file: sockshop/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
-      PCF_APP_SUFFIX: ((pcf-prod-app-suffix)) 
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
   - put: pcf-production
     params:
