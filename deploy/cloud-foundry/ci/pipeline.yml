@@ -4,7 +4,7 @@ groups:
   jobs:
   - build-front-end
   - build-front-end-test-image
-  - deploy-front-end-to-development
+  - deploy-front-end-to-stage
   - execute-front-end-functional-tests
   - deploy-front-end-to-loadtest
   - execute-front-end-load-tests
@@ -15,7 +15,7 @@ groups:
   jobs:
   - build-user
   - build-user-test-image
-  - deploy-user-to-development
+  - deploy-user-to-stage
   - execute-user-functional-tests
   - deploy-user-to-loadtest
   - execute-user-load-tests
@@ -23,36 +23,36 @@ groups:
 - name: catalogue-jobs
   jobs:
   - build-catalogue
-  - deploy-catalogue-to-development
+  - deploy-catalogue-to-stage
 
 - name: carts-jobs
   jobs:
   - build-carts
-  - deploy-carts-to-development
+  - deploy-carts-to-stage
 
 - name: orders-jobs
   jobs:
   - build-orders
   - build-orders-test-image
-  - deploy-orders-to-development
+  - deploy-orders-to-stage
   - execute-orders-functional-tests
-  - deploy-orders-to-loadtest
+  - deploy-orders-to-prod
   - execute-orders-loadtests
 
 - name: payment-jobs
   jobs:
   - build-payment
-  - deploy-payment-to-development
+  - deploy-payment-to-stage
 
 - name: shipping-jobs
   jobs:
   - build-shipping
-  - deploy-shipping-to-development
+  - deploy-shipping-to-stage
 
 - name: queue-master-jobs
   jobs:
   - build-queue-master
-  - deploy-queue-master-to-development
+  - deploy-queue-master-to-stage
 
 
 resources:
@@ -199,34 +199,24 @@ resources:
 
 # PCF Environments
 
-- name: pcf-development
+- name: pcf-stage
   type: cf
   source:
     api: ((pcf-api))
-    username: ((pcf-username))
-    password: ((pcf-password))
-    organization: ((pcf-organization))
-    space: production
-    skip_cert_check: false
-
-- name: pcf-loadtest
-  type: cf
-  source:
-    api: ((pcf-api))
-    username: ((pcf-username))
-    password: ((pcf-password))
-    organization: ((pcf-organization))
-    space: production
+    username: ((pcf-stage-deploy-username))
+    password: ((pcf-stage-deploy-password))
+    organization: ((pcf-stage-organization))
+    space: ((pcf-stage-space))
     skip_cert_check: false
 
 - name: pcf-production
   type: cf
   source:
     api: ((pcf-api))
-    username: ((pcf-username))
-    password: ((pcf-password))
-    organization: ((pcf-organization))
-    space: production
+    username: ((pcf-prod-deploy-username))
+    password: ((pcf-prod-deploy-password))
+    organization: ((pcf-prod-organization))
+    space: ((pcf-prod-space))
     skip_cert_check: false
 
 jobs:
@@ -274,7 +264,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-front-end-to-development
+- name: deploy-front-end-to-stage
   serial: true
   public: true
   plan:
@@ -282,7 +272,7 @@ jobs:
     trigger: true
     passed:
       - build-front-end
-  - put: pcf-development
+  - put: pcf-stage
     params:
       manifest: git-front-end/manifest.yml
 
@@ -294,7 +284,7 @@ jobs:
     - get: git-front-end
       trigger: true
       passed:
-        - deploy-front-end-to-development
+        - deploy-front-end-to-stage
     - get: front-end-test-image
       passed:
         - build-front-end-test-image
@@ -322,7 +312,7 @@ jobs:
       trigger: true
       passed:
         - execute-front-end-functional-tests
-  - put: pcf-loadtest
+  - put: pcf-production
     params:
       manifest: git-front-end/manifest.yml 
 
@@ -426,7 +416,7 @@ jobs:
       build: git-user
       cache_tag: latest
 
-- name: deploy-user-to-development
+- name: deploy-user-to-stage
   serial: true
   public: true
   plan:
@@ -446,7 +436,7 @@ jobs:
     - get: git-user
       trigger: true
       passed:
-        - deploy-user-to-development
+        - deploy-user-to-stage
     - get: user-test-image
       passed:
         - build-user-test-image
@@ -473,7 +463,7 @@ jobs:
       trigger: true
       passed:
         - execute-user-functional-tests
-  - put: pcf-loadtest
+  - put: pcf-production
     params:
       manifest: git-user/manifest.yml 
 
@@ -534,7 +524,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-catalogue-to-development
+- name: deploy-catalogue-to-stage
   serial: true
   public: true
   plan:
@@ -578,7 +568,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-carts-to-development
+- name: deploy-carts-to-stage
   serial: true
   public: true
   plan:
@@ -633,7 +623,7 @@ jobs:
       build: git-orders/test
       cache_tag: latest
 
-- name: deploy-orders-to-development
+- name: deploy-orders-to-stage
   serial: true
   public: true
   plan:
@@ -641,7 +631,7 @@ jobs:
     trigger: true
     passed:
       - build-orders  
-  - put: pcf-production
+  - put: pcf-stage
     params:
       manifest: git-orders/manifest.yml
 
@@ -653,7 +643,7 @@ jobs:
     - get: git-orders
       trigger: true
       passed:
-        - deploy-orders-to-development
+        - deploy-orders-to-stage
     - get: orders-test-image
       passed:
         - build-orders-test-image
@@ -671,7 +661,7 @@ jobs:
         - |
           mvn -q test
           
-- name: deploy-orders-to-loadtest
+- name: deploy-orders-to-prod
   serial: true
   public: true
   plan:
@@ -709,7 +699,7 @@ jobs:
         - |
           jmeter -Dduration=300 -n -t test/load/get_endpoints.jmx
 
-## PAYMNET
+## PAYMENT
 
 - name: build-payment
   plan:
@@ -739,7 +729,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-payment-to-development
+- name: deploy-payment-to-stage
   serial: true
   public: true
   plan:
@@ -747,7 +737,7 @@ jobs:
     trigger: true
     passed:
       - build-payment  
-  - put: pcf-production
+  - put: pcf-stage
     params:
       manifest: git-payment/manifest-docker.yml
 
@@ -783,7 +773,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-shipping-to-development
+- name: deploy-shipping-to-stage
   serial: true
   public: true
   plan:
@@ -791,7 +781,7 @@ jobs:
     trigger: true
     passed:
       - build-shipping  
-  - put: pcf-production
+  - put: pcf-stage
     params:
       manifest: git-shipping/manifest.yml
 
@@ -827,7 +817,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-queue-master-to-development
+- name: deploy-queue-master-to-stage
   serial: true
   public: true
   plan:
@@ -835,6 +825,6 @@ jobs:
     trigger: true
     passed:
       - build-queue-master  
-  - put: pcf-production
+  - put: pcf-stage
     params:
       manifest: git-queue-master/manifest.yml
