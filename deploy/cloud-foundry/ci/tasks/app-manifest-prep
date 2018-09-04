@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -xe
+ls -lrt 
 if [ -n "$PRODUCTION" ]; then
 cat ./current-app-info/current-app.txt
 sed "s/APPNAME/$(cat ./current-app-info/next-app.txt)-$PCF_APP_SUFFIX/" ./PivotalDevOpsTutorial/manifests/manifest.yml > ./app-manifest-output/manifest-tmp.yml
