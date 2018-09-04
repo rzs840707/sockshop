@@ -11,7 +11,7 @@ inputs:
 - name: git-pipeline
 - name: git-user
   optional: true
-- name: git-order
+- name: git-orders
   optional: true
 - name: current-app-info
   optional: true
