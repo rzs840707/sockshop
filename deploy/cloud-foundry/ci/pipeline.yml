@@ -793,13 +793,6 @@ jobs:
       - execute-orders-functional-tests
   - get: git-pipeline
     trigger: false      
-  - task: prepare-app-manifest
-    file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
-    params:
-      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix)) 
-      DOCKER_HUB_ACCOUNT: ((docker-hub-username))
-      APP_REPO: git-orders
-      PRODUCTION: true
   - task: get-current-app-color
     file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
     params:
@@ -808,7 +801,14 @@ jobs:
       PCF_ORG: ((pcf-prod-organization))
       PCF_USER: ((pcf-prod-deploy-username))
       PCF_PWD: ((pcf-prod-deploy-password))
-      PCF_SPACE: ((pcf-prod-space))              
+      PCF_SPACE: ((pcf-prod-space))   
+  - task: prepare-app-manifest
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix)) 
+      DOCKER_HUB_ACCOUNT: ((docker-hub-username))
+      APP_REPO: git-orders
+      PRODUCTION: true                 
   - put: dynatrace
     params:
       monspecserviceenvironment: orders/Production
