@@ -17,7 +17,7 @@ groups:
   - build-user-test-image
   - deploy-user-to-stage
   - execute-user-functional-tests
-  - deploy-user-to-loadtest
+  - deploy-user-to-prod
   - execute-user-load-tests
 
 - name: catalogue-jobs
@@ -424,9 +424,14 @@ jobs:
     trigger: true
     passed:
       - build-user
-  - put: pcf-production
+  - task: prepare-app-manifest
+    file: sockshop/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
-      manifest: git-user/manifest.yml
+      PCF_APP_SUFFIX: {{pcf-stage-app-suffix}} 
+      DOCKER_HUB_ACCOUNT: {{docker-hub-username}}
+  - put: pcf-stage
+    params:
+      manifest: app-manifest-output/manifest.yml  
   
 - name: execute-user-functional-tests
   serial: true
@@ -454,18 +459,22 @@ jobs:
         - |
           go test api/endpoints_test.go
 
-- name: deploy-user-to-loadtest
+- name: deploy-user-to-prod
   serial: true
   public: true
   plan:
-  - aggregate:
-    - get: git-user
-      trigger: true
-      passed:
-        - execute-user-functional-tests
+  - get: git-user
+    trigger: true
+    passed:
+        - execute-user-functional-tests  
+  - task: prepare-app-manifest
+    file: sockshop/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
+    params:
+      PCF_APP_SUFFIX: {{pcf-prod-app-suffix}} 
+      DOCKER_HUB_ACCOUNT: {{docker-hub-username}}
   - put: pcf-production
     params:
-      manifest: git-user/manifest.yml 
+        manifest: app-manifest-output/manifest.yml 
 
 - name: execute-user-load-tests
   serial: true
@@ -475,7 +484,7 @@ jobs:
     - get: git-user
       trigger: true
       passed:
-        - deploy-user-to-loadtest
+        - deploy-user-to-prod
     - get: user-test-image
       passed:
         - build-user-test-image
