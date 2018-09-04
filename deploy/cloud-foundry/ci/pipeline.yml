@@ -475,7 +475,6 @@ jobs:
   - put: dynatrace
     params:
       monspecserviceenvironment: user/Staging
-
       pipelinetaskname: deploy-user-to-stage
       deployversion: v1.5      
   - put: pcf-stage
