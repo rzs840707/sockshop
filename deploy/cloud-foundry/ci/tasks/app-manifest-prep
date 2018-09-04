@@ -10,7 +10,7 @@ sed "s/DTGRP/Production/" ./app-manifest-output/manifest-tmp2.yml > ./app-manife
 sed "s/DOCKER_HUB_ACCOUNT/$DOCKER_HUB_ACCOUNT/" ./app-manifest-output/manifest-tmp3.yml > ./app-manifest-output/manifest.yml
 else
 sed "s/APPNAME/$PCF_APP_SUFFIX/" ./$APP_REPO/manifest.yml > ./app-manifest-output/manifest-tmp.yml
-sed "s/DTGRP/Stage/" ./app-manifest-output/manifest-tmp.yml > ./app-manifest-output/manifest-tmp2.yml
+sed "s/DTGRP/Staging/" ./app-manifest-output/manifest-tmp.yml > ./app-manifest-output/manifest-tmp2.yml
 sed "s/DEPLOYMENT_COLOR=APPCOLOR//" ./app-manifest-output/manifest-tmp2.yml > ./app-manifest-output/manifest-tmp3.yml
 sed "s/DOCKER_HUB_ACCOUNT/$DOCKER_HUB_ACCOUNT/" ./app-manifest-output/manifest-tmp3.yml > ./app-manifest-output/manifest.yml
 fi

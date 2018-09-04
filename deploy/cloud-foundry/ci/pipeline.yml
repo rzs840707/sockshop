@@ -476,7 +476,7 @@ jobs:
     params:
       monspecserviceenvironment: user/Staging
       pipelinetaskname: deploy-user-to-stage
-      deployversion: v1.5
+      deployversion: v1.0
       APP_REPO: git-user 
   - put: pcf-stage
     params:
@@ -528,7 +528,7 @@ jobs:
     params:
       monspecserviceenvironment: user/Staging
       pipelinetaskname: deploy-user-to-prod
-      deployversion: v1.5  
+      deployversion: v1.0 
       APP_REPO: git-user      
   - put: pcf-production
     params:
@@ -705,7 +705,13 @@ jobs:
     params:
       PCF_APP_SUFFIX: ((pcf-stage-orders-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
-      APP_REPO: git-orders     
+      APP_REPO: git-orders  
+  - put: dynatrace
+    params:
+      monspecserviceenvironment: orders/Staging
+      pipelinetaskname: deploy-orders-to-prod
+      deployversion: v1.0 
+      APP_REPO: git-orders            
   - put: pcf-stage
     params:
       manifest: app-manifest-output/manifest.yml  
@@ -751,7 +757,13 @@ jobs:
     params:
       PCF_APP_SUFFIX: ((pcf-prod-orders-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
-      APP_REPO: git-orders      
+      APP_REPO: git-orders  
+  - put: dynatrace
+    params:
+      monspecserviceenvironment: orders/Staging
+      pipelinetaskname: deploy-orders-to-prod
+      deployversion: v1.0 
+      APP_REPO: git-orders     
   - put: pcf-production
     params:
       manifest: app-manifest-output/manifest.yml  
