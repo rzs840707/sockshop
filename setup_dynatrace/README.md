@@ -44,6 +44,8 @@ spec:
   image: ""
   args:
   - APP_LOG_CONTENT_ACCESS=1
-  env: []
+  env:
+    - name: ONEAGENT_ENABLE_VOLUME_STORAGE
+      value: "true"
 EOF
 ```
