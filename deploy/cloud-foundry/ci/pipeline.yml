@@ -678,7 +678,7 @@ jobs:
   - task: prepare-app-manifest
     file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
-      PCF_APP_SUFFIX: ((pcf-stage-user-suffix)) 
+      PCF_APP_SUFFIX: ((pcf-stage-orders-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
       APP_REPO: git-orders     
   - put: pcf-stage
@@ -724,7 +724,7 @@ jobs:
   - task: prepare-app-manifest
     file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
-      PCF_APP_SUFFIX: ((pcf-stage-user-suffix)) 
+      PCF_APP_SUFFIX: ((pcf-stage-orders-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
       APP_REPO: git-orders      
   - put: pcf-production
