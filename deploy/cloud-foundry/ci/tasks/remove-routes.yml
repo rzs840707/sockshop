@@ -9,7 +9,11 @@ image_resource:
 
 
 inputs:
-- name: PivotalDevOpsTutorial
+- name: git-pipeline
+- name: git-user
+  optional: true
+- name: git-orders
+  optional: true
 - name: current-app-info
 
 run:

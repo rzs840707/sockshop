@@ -8,7 +8,11 @@ image_resource:
     tag: "latest"
 
 inputs:
-- name: PivotalDevOpsTutorial
+- name: git-pipeline
+- name: git-user
+  optional: true
+- name: git-orders
+  optional: true
 
 outputs:
 - name: current-app-info

@@ -517,13 +517,23 @@ jobs:
     passed:
         - execute-user-functional-tests 
   - get: git-pipeline
-    trigger: false         
+    trigger: false
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((prod-deploy-username))
+      PCF_PWD: ((prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))              
   - task: prepare-app-manifest
     file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
       PCF_APP_SUFFIX: ((pcf-prod-user-suffix)) 
       DOCKER_HUB_ACCOUNT: ((docker-hub-username))
       APP_REPO: git-user
+      PRODUCTION: true       
   - put: dynatrace
     params:
       monspecserviceenvironment: user/Production
