@@ -19,6 +19,7 @@ groups:
   - execute-user-functional-tests
   - deploy-user-to-prod
   - execute-user-load-tests
+  - promote-new-version-user
 
 - name: catalogue-jobs
   jobs:
@@ -524,8 +525,8 @@ jobs:
       PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
       PCF_API: ((pcf-prod-api))
       PCF_ORG: ((pcf-prod-organization))
-      PCF_USER: ((prod-deploy-username))
-      PCF_PWD: ((prod-deploy-password))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
       PCF_SPACE: ((pcf-prod-space))              
   - task: prepare-app-manifest
     file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
@@ -568,8 +569,34 @@ jobs:
         args:
         - -exc
         - |
-          jmeter -Dduration=300 -n -t test/load/get_endpoints.jmx
-          
+          jmeter -Dduration=30 -n -t test/load/get_endpoints.jmx
+
+- name: promote-new-version-user
+  serial: true
+  public: true
+  plan:
+  - get: git-user
+    trigger: true
+    passed:
+      - execute-user-load-tests
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))   
+  - task: switch-app-routes
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/update-routes.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))                 
 
 # CATALOGUE
 

@@ -18,4 +18,4 @@ outputs:
 - name: current-app-info
 
 run:
-  path: ./PivotalDevOpsTutorial/ci/tasks/current-app-get-info
+  path: ./git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info
