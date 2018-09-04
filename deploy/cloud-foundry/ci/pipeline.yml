@@ -683,7 +683,7 @@ jobs:
       APP_REPO: git-orders     
   - put: pcf-stage
     params:
-      manifest: git-orders/manifest.yml
+      manifest: app-manifest-output/manifest.yml  
 
 - name: execute-orders-functional-tests
   serial: true
@@ -729,7 +729,7 @@ jobs:
       APP_REPO: git-orders      
   - put: pcf-production
     params:
-      manifest: git-orders/manifest.yml
+      manifest: app-manifest-output/manifest.yml  
 
 - name: execute-orders-loadtests
   serial: true
