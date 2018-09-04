@@ -54,6 +54,10 @@ groups:
   - build-queue-master
   - deploy-queue-master-to-stage
 
+- name: init-dynatrace
+  jobs: 
+  - init-dynatrace-user
+  - init-dynatrace-orders
 
 resources:
 
@@ -118,7 +122,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/front-end
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -126,7 +129,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/front-end-test
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -134,7 +136,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/payment
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -142,7 +143,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/catalogue
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -150,7 +150,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/user
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -158,7 +157,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/user-test
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -166,7 +164,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/user
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -174,7 +171,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/orders
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -182,7 +178,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/orders-test
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -190,7 +185,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/shipping
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -198,7 +192,6 @@ resources:
   type: docker-image
   source:
     repository: ((docker-hub-username))/payment
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -225,6 +218,35 @@ resources:
     skip_cert_check: false
 
 jobs:
+
+# Initialize Dynatrace Custom Device
+
+- name: init-dynatrace-user
+  public: true
+  plan:
+  - aggregate:
+    - get: git-pipeline
+    - get: git-user 
+  - task: init-dynatrace-task
+    file: git-pipeline/ci/tasks/init-dynatrace-task.yml
+    params: 
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-user
+
+- name: init-dynatrace-orders
+  public: true
+  plan:
+  - aggregate: 
+    - get: git-pipeline
+    - get: git-orders
+  - task: init-dynatrace-task
+    file: git-pipeline/ci/tasks/init-dynatrace-task.yml
+    params: 
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-orders
+
 
 # FRONT-END
 
