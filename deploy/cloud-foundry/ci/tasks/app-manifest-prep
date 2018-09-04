@@ -4,13 +4,13 @@ set -xe
 ls -lrt 
 if [ -n "$PRODUCTION" ]; then
 cat ./current-app-info/current-app.txt
-sed "s/APPNAME/$(cat ./current-app-info/next-app.txt)-$PCF_APP_SUFFIX/" ./PivotalDevOpsTutorial/manifests/manifest.yml > ./app-manifest-output/manifest-tmp.yml
+sed "s/APPNAME/$(cat ./current-app-info/next-app.txt)-$PCF_APP_SUFFIX/" ./git-pipeline/manifests/manifest.yml > ./app-manifest-output/manifest-tmp.yml
 sed "s/APPCOLOR/$(cat ./current-app-info/next-app.txt)/" ./app-manifest-output/manifest-tmp.yml > ./app-manifest-output/manifest-tmp2.yml
 sed "s/DTGRP/Production/" ./app-manifest-output/manifest-tmp2.yml > ./app-manifest-output/manifest-tmp3.yml
 sed "s/DOCKER-HUB-ACCOUNT/$DOCKER_HUB_ACCOUNT/" ./app-manifest-output/manifest-tmp3.yml > ./app-manifest-output/manifest.yml
 
 else
-sed "s/APPNAME/$PCF_APP_SUFFIX/" ./PivotalDevOpsTutorial/manifests/manifest.yml > ./app-manifest-output/manifest-tmp.yml
+sed "s/APPNAME/$PCF_APP_SUFFIX/" ./git-pipeline/manifests/manifest.yml > ./app-manifest-output/manifest-tmp.yml
 sed "s/DTGRP/Stage/" ./app-manifest-output/manifest-tmp.yml > ./app-manifest-output/manifest-tmp2.yml
 sed "s/DEPLOYMENT_COLOR=APPCOLOR//" ./app-manifest-output/manifest-tmp2.yml > ./app-manifest-output/manifest-tmp3.yml
 sed "s/DOCKER-HUB-ACCOUNT/$DOCKER_HUB_ACCOUNT/" ./app-manifest-output/manifest-tmp3.yml > ./app-manifest-output/manifest.yml
