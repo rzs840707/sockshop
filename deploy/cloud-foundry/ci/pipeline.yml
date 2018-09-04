@@ -427,8 +427,8 @@ jobs:
   - task: prepare-app-manifest
     file: sockshop/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
-      PCF_APP_SUFFIX: {{pcf-stage-app-suffix}} 
-      DOCKER_HUB_ACCOUNT: {{docker-hub-username}}
+      PCF_APP_SUFFIX: ((pcf-stage-app-suffix)) 
+      DOCKER_HUB_ACCOUNT: ((docker-hub-username))
   - put: pcf-stage
     params:
       manifest: app-manifest-output/manifest.yml  
@@ -470,8 +470,8 @@ jobs:
   - task: prepare-app-manifest
     file: sockshop/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
-      PCF_APP_SUFFIX: {{pcf-prod-app-suffix}} 
-      DOCKER_HUB_ACCOUNT: {{docker-hub-username}}
+      PCF_APP_SUFFIX: ((pcf-prod-app-suffix)) 
+      DOCKER_HUB_ACCOUNT: ((docker-hub-username))
   - put: pcf-production
     params:
         manifest: app-manifest-output/manifest.yml 
