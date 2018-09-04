@@ -558,19 +558,20 @@ jobs:
     - get: user-test-image
       passed:
         - build-user-test-image
+    - get: git-pipeline
+      trigger: false        
+  - task: get-current-app-color
+    file: xcurrent-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))           
   - task: run-load-tests
     image: user-test-image
-    config:
-      platform: linux
-      inputs:
-      - name: git-user
-      run:
-        dir: git-user
-        path: /bin/bash
-        args:
-        - -exc
-        - |
-          jmeter -Dduration=30 -n -t test/load/get_endpoints.jmx
+    file: ./git-pipeline/deploy/cloud-foundry/ci/tasks/load-tests.yml
 
 - name: promote-new-version-user
   serial: true
