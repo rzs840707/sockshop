@@ -112,7 +112,7 @@ resources:
 - name: front-end-image
   type: docker-image
   source:
-    repository: jbraeuer/front-end
+    repository: ((docker-hub-username))/front-end
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -120,7 +120,7 @@ resources:
 - name: front-end-test-image
   type: docker-image
   source:
-    repository: jbraeuer/front-end-test
+    repository: ((docker-hub-username))/front-end-test
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -128,7 +128,7 @@ resources:
 - name: payment-image
   type: docker-image
   source:
-    repository: jbraeuer/payment
+    repository: ((docker-hub-username))/payment
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -136,7 +136,7 @@ resources:
 - name: catalogue-image
   type: docker-image
   source:
-    repository: jbraeuer/catalogue
+    repository: ((docker-hub-username))/catalogue
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -144,7 +144,7 @@ resources:
 - name: user-image
   type: docker-image
   source:
-    repository: jbraeuer/user
+    repository: ((docker-hub-username))/user
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -152,7 +152,7 @@ resources:
 - name: user-test-image
   type: docker-image
   source:
-    repository: jbraeuer/user-test
+    repository: ((docker-hub-username))/user-test
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -160,7 +160,7 @@ resources:
 - name: carts-image
   type: docker-image
   source:
-    repository: jbraeuer/user
+    repository: ((docker-hub-username))/user
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -168,7 +168,7 @@ resources:
 - name: orders-image
   type: docker-image
   source:
-    repository: jbraeuer/orders
+    repository: ((docker-hub-username))/orders
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -176,7 +176,7 @@ resources:
 - name: orders-test-image
   type: docker-image
   source:
-    repository: jbraeuer/orders-test
+    repository: ((docker-hub-username))/orders-test
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -184,7 +184,7 @@ resources:
 - name: shipping-image
   type: docker-image
   source:
-    repository: jbraeuer/shipping
+    repository: ((docker-hub-username))/shipping
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
@@ -192,7 +192,7 @@ resources:
 - name: queue-master-image
   type: docker-image
   source:
-    repository: jbraeuer/payment
+    repository: ((docker-hub-username))/payment
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
