@@ -474,7 +474,8 @@ jobs:
       APP_REPO: git-user
   - put: dynatrace
     params:
-      monspecserviceenvironment: User/Staging
+      monspecserviceenvironment: user/Staging
+
       pipelinetaskname: deploy-user-to-stage
       deployversion: v1.5      
   - put: pcf-stage
@@ -527,7 +528,8 @@ jobs:
     params:
       monspecserviceenvironment: user/Staging
       pipelinetaskname: deploy-user-to-prod
-      deployversion: v1.5        
+      deployversion: v1.5  
+      APP_REPO: git-user      
   - put: pcf-production
     params:
         manifest: app-manifest-output/manifest.yml 
