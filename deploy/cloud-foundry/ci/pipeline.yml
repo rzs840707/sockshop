@@ -526,7 +526,7 @@ jobs:
       APP_REPO: git-user
   - put: dynatrace
     params:
-      monspecserviceenvironment: user/Staging
+      monspecserviceenvironment: user/Production
       pipelinetaskname: deploy-user-to-prod
       deployversion: v1.0 
       APP_REPO: git-user      
@@ -760,7 +760,7 @@ jobs:
       APP_REPO: git-orders  
   - put: dynatrace
     params:
-      monspecserviceenvironment: orders/Staging
+      monspecserviceenvironment: orders/Production
       pipelinetaskname: deploy-orders-to-prod
       deployversion: v1.0 
       APP_REPO: git-orders     
