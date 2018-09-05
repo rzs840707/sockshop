@@ -10,6 +10,7 @@ Execute in terminal:
 export API_URL=https://oft62130.sprint.dynatracelabs.com/api
 export API_TOKEN=qjY6KIasQ8uDh6UKM0Hwk
 export PLATFORM_AS_A_SERVICE_TOKEN=dudXKTTxScSTQpukjIq-9
+export HOST_GROUP=istio
 ```
 
 <br>
@@ -44,6 +45,7 @@ spec:
   image: ""
   args:
   - APP_LOG_CONTENT_ACCESS=1
+    HOST_GROUP=${HOST_GROUP}
   env:
     - name: ONEAGENT_ENABLE_VOLUME_STORAGE
       value: "true"
