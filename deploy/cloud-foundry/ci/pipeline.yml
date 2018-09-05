@@ -38,7 +38,7 @@ groups:
   - deploy-orders-to-stage
   - execute-orders-functional-tests
   - deploy-orders-to-prod
-  - execute-orders-loadtests
+  - execute-orders-load-tests
   - promote-new-version-orders
 
 - name: payment-jobs
@@ -832,7 +832,7 @@ jobs:
     params:
       manifest: app-manifest-output/manifest.yml  
 
-- name: execute-orders-loadtests
+- name: execute-orders-load-tests
   serial: true
   public: true
   plan:
@@ -844,19 +844,31 @@ jobs:
     - get: orders-test-image
       passed:
         - build-orders-test-image
-  - task: run-functional-tests
+    - get: git-pipeline
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))           
+  - task: run-load-tests
     image: orders-test-image
-    config:
-      platform: linux
-      inputs:
-      - name: git-orders
-      run:
-        dir: git-orders
-        path: /bin/sh
-        args:
-        - -exc
-        - |
-          jmeter -Dduration=30 -n -t test/load/get_endpoints.jmx
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/load-tests.yml
+    params:
+      APP_REPO: git-orders
+      PRODUCTION: true
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_APP_DOMAIN: ((pcf-prod-app-domain))   
+  - task: push-dynatrace-monspec-data
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/push-dynatrace-monspec-data.yml
+    params: 
+      monspecserviceenvironment: user/Production-$NEXT_APP_COLOR
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-orders            
 
 - name: promote-new-version-orders
   serial: true
@@ -865,7 +877,7 @@ jobs:
   - get: git-orders
     trigger: true
     passed:
-      - execute-orders-loadtests
+      - execute-orders-load-tests
   - get: git-pipeline
     trigger: false      
   - task: get-current-app-color

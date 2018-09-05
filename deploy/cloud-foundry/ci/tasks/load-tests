@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -exc
+set -ex
 
 # set LOAD_URL to the proper color in production, run directly against url in stage
 if [ -n "$PRODUCTION" ]; then
