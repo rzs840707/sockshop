@@ -860,7 +860,7 @@ jobs:
     params:
       APP_REPO: git-orders
       PRODUCTION: true
-      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix))
       PCF_APP_DOMAIN: ((pcf-prod-app-domain))   
   - task: push-dynatrace-monspec-data
     file: git-pipeline/deploy/cloud-foundry/ci/tasks/push-dynatrace-monspec-data.yml
