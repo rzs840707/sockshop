@@ -45,7 +45,7 @@ spec:
   image: ""
   args:
   - APP_LOG_CONTENT_ACCESS=1
-    HOST_GROUP=${HOST_GROUP}
+  - HOST_GROUP=${HOST_GROUP}
   env:
     - name: ONEAGENT_ENABLE_VOLUME_STORAGE
       value: "true"
