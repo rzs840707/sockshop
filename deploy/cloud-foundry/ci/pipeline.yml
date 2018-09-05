@@ -519,7 +519,7 @@ jobs:
   - get: git-user
     trigger: true
     passed:
-        - execute-user-functional-tests 
+      - execute-user-functional-tests 
   - get: git-pipeline
     trigger: false
   - task: get-current-app-color
