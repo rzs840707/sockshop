@@ -19,6 +19,7 @@ groups:
   - execute-user-functional-tests
   - deploy-user-to-prod
   - execute-user-load-tests
+  - validate-user-load-test
   - promote-new-version-user
 
 - name: catalogue-jobs
@@ -585,7 +586,7 @@ jobs:
       tenanthost: ((tenanthost))
       APP_REPO: git-user   
 
-- name: promote-new-version-user
+- name: validate-user-load-test
   serial: true
   public: true
   plan:
@@ -593,6 +594,34 @@ jobs:
     trigger: true
     passed:
       - execute-user-load-tests
+  - get: git-pipeline
+    trigger: false      
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))       
+  - task: validate-via-monspec
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/validate-via-monspec.yml
+    params: 
+      monspeccomparison: user/Production-$NEXT_APP_COLOR\ToProduction-$CURRENT_APP_COLOR\Last5m
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-user     
+
+
+- name: promote-new-version-user
+  serial: true
+  public: true
+  plan:
+  - get: git-user
+    trigger: true
+    passed:
+      - validate-user-load-test
   - get: git-pipeline
     trigger: false      
   - task: get-current-app-color
