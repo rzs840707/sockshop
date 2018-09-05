@@ -4,7 +4,7 @@ set -e
 
 echo "configuring Dynatrace CLI with $apitoken and $tenanthost"
 
-python /dtcli/dtcli.py config apitoken $apitoken tenanthost $tenanthost
+python /dtcli/dtcli.py config apitoken $apitoken tenanthost $tenanthost debug 1
 
 echo "initializing Dynatrace Custom Device to store timeseries performance data"
 

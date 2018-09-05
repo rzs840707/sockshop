@@ -78,55 +78,55 @@ resources:
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/sockshop.git
+    uri: https://github.com/acm-workshop/sockshop.git
 
 - name: git-front-end
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/front-end.git
+    uri: https://github.com/acm-workshop/front-end.git
 
 - name: git-user
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/user.git
+    uri: https://github.com/acm-workshop/user.git
 
 - name: git-payment
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/payment.git
+    uri: https://github.com/acm-workshop/payment.git
 
 - name: git-catalogue
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/catalogue.git
+    uri: https://github.com/acm-workshop/catalogue.git
 
 - name: git-carts
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/carts.git
+    uri: https://github.com/acm-workshop/carts.git
 
 - name: git-orders
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/orders.git
+    uri: https://github.com/acm-workshop/orders.git
 
 - name: git-shipping
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/shipping.git
+    uri: https://github.com/acm-workshop/shipping.git
 
 - name: git-queue-master
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/queue-master.git
+    uri: https://github.com/acm-workshop/queue-master.git
 
 - name: dynatrace
   type: dynatrace-resource
