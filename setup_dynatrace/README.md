@@ -7,9 +7,9 @@
 Execute in terminal:
 
 ```
-export API_URL=https://uap09929.sprint.dynatracelabs.com/api
-export API_TOKEN=xjxiV9dURi-WDkakKmlTa
-export PLATFORM_AS_A_SERVICE_TOKEN=6BNRK2KTSe6Qi7IZXWiuR
+export API_URL=https://oft62130.sprint.dynatracelabs.com/api
+export API_TOKEN=qjY6KIasQ8uDh6UKM0Hwk
+export PLATFORM_AS_A_SERVICE_TOKEN=dudXKTTxScSTQpukjIq-9
 ```
 
 <br>
@@ -44,6 +44,8 @@ spec:
   image: ""
   args:
   - APP_LOG_CONTENT_ACCESS=1
-  env: []
+  env:
+    - name: ONEAGENT_ENABLE_VOLUME_STORAGE
+      value: "true"
 EOF
 ```

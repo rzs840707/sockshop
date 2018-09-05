@@ -4,7 +4,7 @@ groups:
   jobs:
   - build-front-end
   - build-front-end-test-image
-  - deploy-front-end-to-development
+  - deploy-front-end-to-stage
   - execute-front-end-functional-tests
   - deploy-front-end-to-loadtest
   - execute-front-end-load-tests
@@ -15,221 +15,255 @@ groups:
   jobs:
   - build-user
   - build-user-test-image
-  - deploy-user-to-development
+  - deploy-user-to-stage
   - execute-user-functional-tests
-  - deploy-user-to-loadtest
+  - deploy-user-to-prod
   - execute-user-load-tests
+  - validate-user-load-test
+  - promote-new-version-user
 
 - name: catalogue-jobs
   jobs:
   - build-catalogue
-  - deploy-catalogue-to-development
+  - deploy-catalogue-to-stage
 
 - name: carts-jobs
   jobs:
   - build-carts
-  - deploy-carts-to-development
+  - deploy-carts-to-stage
 
 - name: orders-jobs
   jobs:
   - build-orders
   - build-orders-test-image
-  - deploy-orders-to-development
+  - deploy-orders-to-stage
   - execute-orders-functional-tests
-  - deploy-orders-to-loadtest
-  - execute-orders-loadtests
+  - deploy-orders-to-prod
+  - execute-orders-load-tests
+  - validate-orders-load-test
+  - promote-new-version-orders
 
 - name: payment-jobs
   jobs:
   - build-payment
-  - deploy-payment-to-development
+  - deploy-payment-to-stage
 
 - name: shipping-jobs
   jobs:
   - build-shipping
-  - deploy-shipping-to-development
+  - deploy-shipping-to-stage
 
 - name: queue-master-jobs
   jobs:
   - build-queue-master
-  - deploy-queue-master-to-development
+  - deploy-queue-master-to-stage
+
+- name: init-dynatrace
+  jobs: 
+  - init-dynatrace-user
+  - init-dynatrace-orders
+
+
+resource_types:
+- name: dynatrace-resource
+  type: docker-image
+  source:
+    repository: mvilliger/dynatrace-resource
 
 
 resources:
 
 # GitHub Repositories
+- name: git-pipeline
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/acm-workshop/sockshop.git
 
 - name: git-front-end
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/front-end.git
+    uri: https://github.com/acm-workshop/front-end.git
 
 - name: git-user
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/user.git
+    uri: https://github.com/acm-workshop/user.git
 
 - name: git-payment
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/payment.git
+    uri: https://github.com/acm-workshop/payment.git
 
 - name: git-catalogue
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/catalogue.git
+    uri: https://github.com/acm-workshop/catalogue.git
 
 - name: git-carts
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/carts.git
+    uri: https://github.com/acm-workshop/carts.git
 
 - name: git-orders
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/orders.git
+    uri: https://github.com/acm-workshop/orders.git
 
 - name: git-shipping
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/shipping.git
+    uri: https://github.com/acm-workshop/shipping.git
 
 - name: git-queue-master
   type: git
   source:
     branch: master
-    uri: https://github.com/dynatrace-sockshop/queue-master.git
+    uri: https://github.com/acm-workshop/queue-master.git
 
+- name: dynatrace
+  type: dynatrace-resource
+  source:
+    apitoken: ((apitoken))
+    tenanthost: ((tenanthost))
 # Docker Images
 
 - name: front-end-image
   type: docker-image
   source:
-    repository: jbraeuer/front-end
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/front-end
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 - name: front-end-test-image
   type: docker-image
   source:
-    repository: jbraeuer/front-end-test
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/front-end-test
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 - name: payment-image
   type: docker-image
   source:
-    repository: jbraeuer/payment
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/payment
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 - name: catalogue-image
   type: docker-image
   source:
-    repository: jbraeuer/catalogue
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/catalogue
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 - name: user-image
   type: docker-image
   source:
-    repository: jbraeuer/user
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/user
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 - name: user-test-image
   type: docker-image
   source:
-    repository: jbraeuer/user-test
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/user-test
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 - name: carts-image
   type: docker-image
   source:
-    repository: jbraeuer/user
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/user
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 - name: orders-image
   type: docker-image
   source:
-    repository: jbraeuer/orders
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/orders
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 - name: orders-test-image
   type: docker-image
   source:
-    repository: jbraeuer/orders-test
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/orders-test
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 - name: shipping-image
   type: docker-image
   source:
-    repository: jbraeuer/shipping
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/shipping
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 - name: queue-master-image
   type: docker-image
   source:
-    repository: jbraeuer/payment
-    email: ((docker-hub-email))
+    repository: ((docker-hub-username))/payment
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
 # PCF Environments
 
-- name: pcf-development
+- name: pcf-stage
   type: cf
   source:
-    api: ((pcf-api))
-    username: ((pcf-username))
-    password: ((pcf-password))
-    organization: ((pcf-organization))
-    space: production
-    skip_cert_check: false
-
-- name: pcf-loadtest
-  type: cf
-  source:
-    api: ((pcf-api))
-    username: ((pcf-username))
-    password: ((pcf-password))
-    organization: ((pcf-organization))
-    space: production
+    api: ((pcf-stage-api))
+    username: ((pcf-stage-deploy-username))
+    password: ((pcf-stage-deploy-password))
+    organization: ((pcf-stage-organization))
+    space: ((pcf-stage-space))
     skip_cert_check: false
 
 - name: pcf-production
   type: cf
   source:
-    api: ((pcf-api))
-    username: ((pcf-username))
-    password: ((pcf-password))
-    organization: ((pcf-organization))
-    space: production
+    api: ((pcf-prod-api))
+    username: ((pcf-prod-deploy-username))
+    password: ((pcf-prod-deploy-password))
+    organization: ((pcf-prod-organization))
+    space: ((pcf-prod-space))
     skip_cert_check: false
 
 jobs:
+
+# Initialize Dynatrace Custom Device
+
+- name: init-dynatrace-user
+  public: true
+  plan:
+  - aggregate:
+    - get: git-pipeline
+    - get: git-user 
+  - task: init-dynatrace-task
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/init-dynatrace-task.yml
+    params: 
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-user
+
+- name: init-dynatrace-orders
+  public: true
+  plan:
+  - aggregate: 
+    - get: git-pipeline
+    - get: git-orders
+  - task: init-dynatrace-task
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/init-dynatrace-task.yml
+    params: 
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-orders
+
 
 # FRONT-END
 
@@ -274,7 +308,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-front-end-to-development
+- name: deploy-front-end-to-stage
   serial: true
   public: true
   plan:
@@ -282,7 +316,7 @@ jobs:
     trigger: true
     passed:
       - build-front-end
-  - put: pcf-development
+  - put: pcf-stage
     params:
       manifest: git-front-end/manifest.yml
 
@@ -294,7 +328,7 @@ jobs:
     - get: git-front-end
       trigger: true
       passed:
-        - deploy-front-end-to-development
+        - deploy-front-end-to-stage
     - get: front-end-test-image
       passed:
         - build-front-end-test-image
@@ -322,7 +356,7 @@ jobs:
       trigger: true
       passed:
         - execute-front-end-functional-tests
-  - put: pcf-loadtest
+  - put: pcf-production
     params:
       manifest: git-front-end/manifest.yml 
 
@@ -426,7 +460,7 @@ jobs:
       build: git-user
       cache_tag: latest
 
-- name: deploy-user-to-development
+- name: deploy-user-to-stage
   serial: true
   public: true
   plan:
@@ -434,9 +468,23 @@ jobs:
     trigger: true
     passed:
       - build-user
-  - put: pcf-production
+  - get: git-pipeline
+    trigger: false      
+  - task: prepare-app-manifest
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
-      manifest: git-user/manifest.yml
+      PCF_APP_SUFFIX: ((pcf-stage-user-suffix)) 
+      DOCKER_HUB_ACCOUNT: ((docker-hub-username))
+      APP_REPO: git-user
+  - put: dynatrace
+    params:
+      monspecserviceenvironment: user/Staging
+      pipelinetaskname: deploy-user-to-stage
+      deployversion: v1.0
+      APP_REPO: git-user 
+  - put: pcf-stage
+    params:
+      manifest: app-manifest-output/manifest.yml  
   
 - name: execute-user-functional-tests
   serial: true
@@ -446,7 +494,7 @@ jobs:
     - get: git-user
       trigger: true
       passed:
-        - deploy-user-to-development
+        - deploy-user-to-stage
     - get: user-test-image
       passed:
         - build-user-test-image
@@ -464,18 +512,41 @@ jobs:
         - |
           go test api/endpoints_test.go
 
-- name: deploy-user-to-loadtest
+- name: deploy-user-to-prod
   serial: true
   public: true
   plan:
-  - aggregate:
-    - get: git-user
-      trigger: true
-      passed:
-        - execute-user-functional-tests
-  - put: pcf-loadtest
+  - get: git-user
+    trigger: true
+    passed:
+      - execute-user-functional-tests 
+  - get: git-pipeline
+    trigger: false
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
     params:
-      manifest: git-user/manifest.yml 
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))              
+  - task: prepare-app-manifest
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix)) 
+      DOCKER_HUB_ACCOUNT: ((docker-hub-username))
+      APP_REPO: git-user
+      PRODUCTION: true       
+  - put: dynatrace
+    params:
+      monspecserviceenvironment: user/Production
+      pipelinetaskname: deploy-user-to-prod
+      deployversion: v1.0 
+      APP_REPO: git-user      
+  - put: pcf-production
+    params:
+        manifest: app-manifest-output/manifest.yml 
 
 - name: execute-user-load-tests
   serial: true
@@ -485,24 +556,94 @@ jobs:
     - get: git-user
       trigger: true
       passed:
-        - deploy-user-to-loadtest
+        - deploy-user-to-prod
     - get: user-test-image
       passed:
         - build-user-test-image
+    - get: git-pipeline
+      trigger: false        
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))           
   - task: run-load-tests
     image: user-test-image
-    config:
-      platform: linux
-      inputs:
-      - name: git-user
-      run:
-        dir: git-user
-        path: /bin/bash
-        args:
-        - -exc
-        - |
-          jmeter -Dduration=300 -n -t test/load/get_endpoints.jmx
-          
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/load-tests.yml
+    params:
+      APP_REPO: git-user
+      PRODUCTION: true
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_APP_DOMAIN: ((pcf-prod-app-domain))   
+  - task: push-dynatrace-monspec-data
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/push-dynatrace-monspec-data.yml
+    params: 
+      monspecserviceenvironment: user/Production-$NEXT_APP_COLOR
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-user   
+
+- name: validate-user-load-test
+  serial: true
+  public: true
+  plan:
+  - get: git-user
+    trigger: true
+    passed:
+      - execute-user-load-tests
+  - get: git-pipeline
+    trigger: false      
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))       
+  - task: validate-via-monspec
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/validate-via-monspec.yml
+    params: 
+      monspeccomparison: user/Production-$NEXT_APP_COLOR\ToProduction-$CURRENT_APP_COLOR\Last5m
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-user     
+
+
+- name: promote-new-version-user
+  serial: true
+  public: true
+  plan:
+  - get: git-user
+    trigger: true
+    passed:
+      - validate-user-load-test
+  - get: git-pipeline
+    trigger: false      
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))   
+  - task: switch-app-routes
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/update-routes.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))
+      PCF_APP_DOMAIN: ((pcf-prod-app-domain))              
 
 # CATALOGUE
 
@@ -534,7 +675,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-catalogue-to-development
+- name: deploy-catalogue-to-stage
   serial: true
   public: true
   plan:
@@ -578,7 +719,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-carts-to-development
+- name: deploy-carts-to-stage
   serial: true
   public: true
   plan:
@@ -633,17 +774,31 @@ jobs:
       build: git-orders/test
       cache_tag: latest
 
-- name: deploy-orders-to-development
+- name: deploy-orders-to-stage
   serial: true
   public: true
   plan:
   - get: git-orders
     trigger: true
     passed:
-      - build-orders  
-  - put: pcf-production
+      - build-orders
+  - get: git-pipeline
+    trigger: false      
+  - task: prepare-app-manifest
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
     params:
-      manifest: git-orders/manifest.yml
+      PCF_APP_SUFFIX: ((pcf-stage-orders-suffix)) 
+      DOCKER_HUB_ACCOUNT: ((docker-hub-username))
+      APP_REPO: git-orders  
+  - put: dynatrace
+    params:
+      monspecserviceenvironment: orders/Staging
+      pipelinetaskname: deploy-orders-to-prod
+      deployversion: v1.0 
+      APP_REPO: git-orders            
+  - put: pcf-stage
+    params:
+      manifest: app-manifest-output/manifest.yml  
 
 - name: execute-orders-functional-tests
   serial: true
@@ -653,7 +808,7 @@ jobs:
     - get: git-orders
       trigger: true
       passed:
-        - deploy-orders-to-development
+        - deploy-orders-to-stage
     - get: orders-test-image
       passed:
         - build-orders-test-image
@@ -671,7 +826,7 @@ jobs:
         - |
           mvn -q test
           
-- name: deploy-orders-to-loadtest
+- name: deploy-orders-to-prod
   serial: true
   public: true
   plan:
@@ -679,37 +834,130 @@ jobs:
     trigger: true
     passed:
       - execute-orders-functional-tests
+  - get: git-pipeline
+    trigger: false      
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))   
+  - task: prepare-app-manifest
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/app-manifest-prep.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix)) 
+      DOCKER_HUB_ACCOUNT: ((docker-hub-username))
+      APP_REPO: git-orders
+      PRODUCTION: true                 
+  - put: dynatrace
+    params:
+      monspecserviceenvironment: orders/Production
+      pipelinetaskname: deploy-orders-to-prod
+      deployversion: v1.0 
+      APP_REPO: git-orders     
   - put: pcf-production
     params:
-      manifest: git-orders/manifest.yml
+      manifest: app-manifest-output/manifest.yml  
 
-- name: execute-orders-loadtests
+- name: execute-orders-load-tests
   serial: true
   public: true
   plan:
   - aggregate:
     - get: git-orders
-      #trigger: true
-      #passed:
-      #  - deploy-orders-to-loadtest
+      trigger: true
+      passed:
+       - deploy-orders-to-prod
     - get: orders-test-image
       passed:
         - build-orders-test-image
-  - task: run-functional-tests
+    - get: git-pipeline
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))           
+  - task: run-load-tests
     image: orders-test-image
-    config:
-      platform: linux
-      inputs:
-      - name: git-orders
-      run:
-        dir: git-orders
-        path: /bin/sh
-        args:
-        - -exc
-        - |
-          jmeter -Dduration=300 -n -t test/load/get_endpoints.jmx
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/load-tests.yml
+    params:
+      APP_REPO: git-orders
+      PRODUCTION: true
+      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix))
+      PCF_APP_DOMAIN: ((pcf-prod-app-domain))   
+  - task: push-dynatrace-monspec-data
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/push-dynatrace-monspec-data.yml
+    params: 
+      monspecserviceenvironment: orders/Production-$NEXT_APP_COLOR
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-orders            
 
-## PAYMNET
+- name: validate-orders-load-test
+  serial: true
+  public: true
+  plan:
+  - get: git-orders
+    trigger: true
+    passed:
+      - execute-orders-load-tests
+  - get: git-pipeline
+    trigger: false      
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))       
+  - task: validate-via-monspec
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/validate-via-monspec.yml
+    params: 
+      monspeccomparison: orders/Production-$NEXT_APP_COLOR\ToProduction-$CURRENT_APP_COLOR\Last5m
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-orders   
+
+- name: promote-new-version-orders
+  serial: true
+  public: true
+  plan:
+  - get: git-orders
+    trigger: true
+    passed:
+      - validate-orders-load-test
+  - get: git-pipeline
+    trigger: false      
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))   
+  - task: switch-app-routes
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/update-routes.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-orders-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))
+      PCF_APP_DOMAIN: ((pcf-prod-app-domain))    
+
+## PAYMENT
 
 - name: build-payment
   plan:
@@ -739,7 +987,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-payment-to-development
+- name: deploy-payment-to-stage
   serial: true
   public: true
   plan:
@@ -747,7 +995,7 @@ jobs:
     trigger: true
     passed:
       - build-payment  
-  - put: pcf-production
+  - put: pcf-stage
     params:
       manifest: git-payment/manifest-docker.yml
 
@@ -783,7 +1031,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-shipping-to-development
+- name: deploy-shipping-to-stage
   serial: true
   public: true
   plan:
@@ -791,7 +1039,7 @@ jobs:
     trigger: true
     passed:
       - build-shipping  
-  - put: pcf-production
+  - put: pcf-stage
     params:
       manifest: git-shipping/manifest.yml
 
@@ -827,7 +1075,7 @@ jobs:
       build: workspace
       cache_tag: latest
 
-- name: deploy-queue-master-to-development
+- name: deploy-queue-master-to-stage
   serial: true
   public: true
   plan:
@@ -835,6 +1083,6 @@ jobs:
     trigger: true
     passed:
       - build-queue-master  
-  - put: pcf-production
+  - put: pcf-stage
     params:
       manifest: git-queue-master/manifest.yml

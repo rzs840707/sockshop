@@ -1,2 +1,3 @@
 # Credentials
 deploy/cloud-foundry/ci/credentials.yml
+jmeter.log
