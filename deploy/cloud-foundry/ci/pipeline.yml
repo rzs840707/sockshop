@@ -40,6 +40,7 @@ groups:
   - execute-orders-functional-tests
   - deploy-orders-to-prod
   - execute-orders-load-tests
+  - validate-orders-load-test
   - promote-new-version-orders
 
 - name: payment-jobs
@@ -899,7 +900,7 @@ jobs:
       tenanthost: ((tenanthost))
       APP_REPO: git-orders            
 
-- name: promote-new-version-orders
+- name: validate-orders-load-test
   serial: true
   public: true
   plan:
@@ -907,6 +908,33 @@ jobs:
     trigger: true
     passed:
       - execute-orders-load-tests
+  - get: git-pipeline
+    trigger: false      
+  - task: get-current-app-color
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((pcf-prod-deploy-username))
+      PCF_PWD: ((pcf-prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))       
+  - task: validate-via-monspec
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/validate-via-monspec.yml
+    params: 
+      monspeccomparison: orders/Production-$NEXT_APP_COLOR\ToProduction-$CURRENT_APP_COLOR\Last5m
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-orders   
+
+- name: promote-new-version-orders
+  serial: true
+  public: true
+  plan:
+  - get: git-orders
+    trigger: true
+    passed:
+      - validate-orders-load-test
   - get: git-pipeline
     trigger: false      
   - task: get-current-app-color
