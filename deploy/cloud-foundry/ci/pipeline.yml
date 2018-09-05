@@ -577,6 +577,13 @@ jobs:
       PRODUCTION: true
       PCF_APP_SUFFIX: ((pcf-prod-user-suffix))
       PCF_APP_DOMAIN: ((pcf-prod-app-domain))   
+  - task: push-dynatrace-monspec-data
+    file: git-pipeline/deploy/cloud-foundry/ci/tasks/push-dynatrace-monspec-data.yml
+    params: 
+      monspecserviceenvironment: user/Production-$NEXT_APP_COLOR
+      apitoken: ((apitoken))
+      tenanthost: ((tenanthost))
+      APP_REPO: git-user   
 
 - name: promote-new-version-user
   serial: true
