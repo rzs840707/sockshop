@@ -16,4 +16,4 @@ inputs:
   optional: true
 
 run:
-  path: ../git-pipeline/deploy/cloud-foundry/ci/tasks/push-dynatrace-monspec-data
+  path: ./git-pipeline/deploy/cloud-foundry/ci/tasks/push-dynatrace-monspec-data
