@@ -3,6 +3,9 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: rabbitmq
+  metadata:
+    name: rabbitmq
+    app: rabbitmq
   namespace: sock-shop
 spec:
   replicas: 1
