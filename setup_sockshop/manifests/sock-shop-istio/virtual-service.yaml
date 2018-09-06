@@ -87,13 +87,11 @@ spec:
     route:
     - destination:
         port:
-          number: 80
-        host: user
+          number: 8081
+        host: sock-shop-gateway
   - match:
     - uri:
-        prefix: "/microservice-front-end"
-    rewrite:
-      uri: "/"
+        prefix: "/"
     route:
     - destination:
         port:
