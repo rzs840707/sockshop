@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+echo "building release tarball"
+
+tar -cvzf ./prepared-release/user.tgz /user
+
+ls -la ./prepared-release/user.tgz
