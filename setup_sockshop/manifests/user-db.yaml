@@ -4,19 +4,19 @@ kind: Deployment
 metadata:
   name: user-db
   labels:
-    name: user-db
+    app: user-db
+    version: v1
   namespace: sock-shop
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: user-db
+        app: user-db
     spec:
       containers:
       - name: user-db
         image: weaveworksdemos/user-db:0.3.0
-
         ports:
         - name: mongo
           containerPort: 27017
@@ -38,3 +38,17 @@ spec:
             medium: Memory
       nodeSelector:
         beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-db
+  labels:
+    app: user-db
+  namespace: sock-shop
+spec:
+  ports:
+  - name: http
+    port: 27017
+  selector:
+    app: user-db
