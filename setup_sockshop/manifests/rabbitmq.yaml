@@ -3,15 +3,14 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: rabbitmq
-  labels:
-    name: rabbitmq
   namespace: sock-shop
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: rabbitmq
+        app: rabbitmq
+        version: v1
       annotations:
         prometheus.io/scrape: "false"
     spec:
@@ -40,3 +39,20 @@ spec:
           name: exporter
       nodeSelector:
         beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  labels:
+    app: rabbitmq
+  namespace: sock-shop
+spec:
+  ports:
+  - port: 5672
+    name: rabbitmq
+  - port: 9090
+    name: exporter
+    protocol: TCP
+  selector:
+    app: rabbitmq
