@@ -46,7 +46,7 @@ metadata:
   namespace: sock-shop
 spec:
   ports:
-  - name: http
+  - name: mongo
     port: 27017
   selector:
     app: user-db
