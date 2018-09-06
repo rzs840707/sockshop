@@ -9,7 +9,8 @@ spec:
   template:
     metadata:
       labels:
-        name: front-end
+        app: front-end
+        version: v1
     spec:
       containers:
       - name: front-end
@@ -47,3 +48,18 @@ spec:
           periodSeconds: 3
       nodeSelector:
         beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end
+  labels:
+    app: front-end
+  namespace: sock-shop
+spec:
+  ports:
+  - name: http
+    port: 8079
+  selector:
+    app: front-end
+
