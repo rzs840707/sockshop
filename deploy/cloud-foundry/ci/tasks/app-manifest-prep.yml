@@ -17,8 +17,6 @@ inputs:
   optional: true
 - name: current-app-info
   optional: true
-- name: app-manifest-output
-  optional: true
 
 outputs:
 - name: app-manifest-output
