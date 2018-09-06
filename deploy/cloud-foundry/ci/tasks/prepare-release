@@ -4,6 +4,7 @@ set -e
 
 echo "building release tarball"
 
+echo "user-service" > ./prepared-release/name
 tar -cvzf ./prepared-release/user.tgz /user
 
 ls -la ./prepared-release/user.tgz
