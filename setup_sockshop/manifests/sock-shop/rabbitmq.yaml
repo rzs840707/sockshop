@@ -10,6 +10,7 @@ spec:
     metadata:
       labels:
         app: rabbitmq
+        name: rabbitmq
         version: v1
       annotations:
         prometheus.io/scrape: "false"
@@ -46,6 +47,7 @@ metadata:
   name: rabbitmq
   labels:
     app: rabbitmq
+    name: rabbitmq
   namespace: sock-shop
 spec:
   ports:
@@ -56,3 +58,5 @@ spec:
     protocol: TCP
   selector:
     app: rabbitmq
+    name: rabbitmq
+
