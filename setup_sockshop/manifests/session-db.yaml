@@ -41,7 +41,7 @@ metadata:
   namespace: sock-shop
 spec:
   ports:
-  - name: http
+  - name: redis
     port: 6379
   selector:
     app: session-db
