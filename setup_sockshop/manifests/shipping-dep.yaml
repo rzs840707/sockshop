@@ -4,14 +4,15 @@ kind: Deployment
 metadata:
   name: shipping
   labels:
-    name: shipping
+    app: shipping
+    version: v1
   namespace: sock-shop
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: shipping
+        app: shipping
     spec:
       containers:
       - name: shipping
@@ -60,3 +61,17 @@ spec:
             medium: Memory
       nodeSelector:
         beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipping
+  labels:
+    app: shipping
+  namespace: sock-shop
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: shipping
