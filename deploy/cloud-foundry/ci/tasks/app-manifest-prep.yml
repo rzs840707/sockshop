@@ -15,6 +15,8 @@ inputs:
   optional: true
 - name: git-carts
   optional: true
+- name: git-queue-master
+  optional: true
 - name: current-app-info
   optional: true
 
