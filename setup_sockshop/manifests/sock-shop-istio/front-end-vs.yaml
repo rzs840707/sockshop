@@ -25,5 +25,5 @@ spec:
     route:
     - destination:
         port:
-          number: 8079
+          number: 80
         host: front-end
