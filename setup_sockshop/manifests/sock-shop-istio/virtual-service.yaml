@@ -43,7 +43,7 @@ spec:
     - uri:
         prefix: "/microservice-payment"
     rewrite:
-      uri: "/"
+      uri: "/microservice-payment"
     route:
     - destination:
         port:
