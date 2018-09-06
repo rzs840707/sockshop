@@ -32,7 +32,7 @@ cat <<EOF | istioctl create -f -
 apiVersion: config.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: sock-shop-default-v1
+  name: front-end-default-v1
   namespace: sock-shop
 spec:
   host: front-end
@@ -88,5 +88,32 @@ spec:
         port:
           number: 8079
         host: front-end
+EOF
+```
+
+
+# Catalogue
+
+## Step 1: Create Deployment and Service:
+
+```
+kubectl apply -f <(istioctl kube-inject -f manifests/catalogue.yaml)
+```
+
+## Step 2: Create Destination Rule
+
+```
+cat <<EOF | istioctl create -f -
+apiVersion: config.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: catalogue-default-v1
+  namespace: sock-shop
+spec:
+  host: catalogue
+  subsets:
+  - name: v1
+    labels:
+      version: v1
 EOF
 ```
