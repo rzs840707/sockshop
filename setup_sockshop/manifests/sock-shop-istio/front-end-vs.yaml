@@ -19,11 +19,3 @@ spec:
         port:
           number: 80
         host: carts
-  - match:
-    - uri:
-        prefix: /
-    route:
-    - destination:
-        port:
-          number: 8079
-        host: front-end
