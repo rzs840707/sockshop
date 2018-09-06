@@ -3,15 +3,14 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: payment
-  labels:
-    name: payment
   namespace: sock-shop
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: payment
+        app: payment
+        version: v1
     spec:
       containers:
       - name: payment
@@ -48,3 +47,17 @@ spec:
           periodSeconds: 3
       nodeSelector:
         beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment
+  labels:
+    app: payment
+  namespace: sock-shop
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: payment
