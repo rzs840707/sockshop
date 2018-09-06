@@ -17,6 +17,8 @@ inputs:
   optional: true
 - name: git-queue-master
   optional: true
+- name: git-shipping
+  optional: true
 - name: current-app-info
   optional: true
 
