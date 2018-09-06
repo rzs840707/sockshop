@@ -11,9 +11,9 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /microservice/carts
+        prefix: "/microservice/carts"
     rewrite:
-      uri: /
+      uri: ""
     route:
     - destination:
         port:
