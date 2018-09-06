@@ -11,7 +11,7 @@ spec:
   http:
   - match:
     - uri:
-        prefix: "/microservice/carts"
+        prefix: "/microservice-carts"
     rewrite:
       uri: "/"
     route:
@@ -19,6 +19,76 @@ spec:
         port:
           number: 80
         host: carts
+  - match:
+    - uri:
+        prefix: "/microservice-catalogue"
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        port:
+          number: 80
+        host: catalogue
+  - match:
+    - uri:
+        prefix: "/microservice-orders"
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        port:
+          number: 80
+        host: orders
+  - match:
+    - uri:
+        prefix: "/microservice-payment"
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        port:
+          number: 80
+        host: payment
+  - match:
+    - uri:
+        prefix: "/microservice-payment"
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        port:
+          number: 80
+        host: payment
+  - match:
+    - uri:
+        prefix: "/microservice-queue-master"
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        port:
+          number: 80
+        host: queue-master
+  - match:
+    - uri:
+        prefix: "/microservice-shipping"
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        port:
+          number: 80
+        host: shipping
+  - match:
+    - uri:
+        prefix: "/microservice-user"
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        port:
+          number: 80
+        host: user
   - match:
     - uri:
         prefix: "/"
