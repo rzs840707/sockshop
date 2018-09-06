@@ -92,6 +92,15 @@ spec:
   - match:
     - uri:
         prefix: "/"
+    - port: 8081
+    route:
+    - destination:
+        port:
+          number: 80
+        host: user
+  - match:
+    - uri:
+        prefix: "/"
     route:
     - destination:
         port:
