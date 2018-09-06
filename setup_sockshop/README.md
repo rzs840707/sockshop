@@ -7,6 +7,11 @@
 Execute in terminal: 
 
 ```
-kubectl create -f manifests-policy/
+kubectl create namespace sock-shop
+kubectl label namespace sock-shop istio-injection=enabled
 kubectl create -f manifests/
 ```
+
+
+
+kubectl create -f manifests-policy/
