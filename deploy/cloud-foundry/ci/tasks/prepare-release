@@ -7,6 +7,8 @@ pwd
 ls -la
 
 echo "user-service" > ./prepared-release/name
+echo "v0.0.1" > ./prepared-release/tag
+
 tar -cvzf ./prepared-release/user.tgz /user
 
 ls -la ./prepared-release/user.tgz
