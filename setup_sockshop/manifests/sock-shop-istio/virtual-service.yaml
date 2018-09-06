@@ -51,16 +51,6 @@ spec:
         host: payment
   - match:
     - uri:
-        prefix: "/microservice-payment"
-    rewrite:
-      uri: "/"
-    route:
-    - destination:
-        port:
-          number: 80
-        host: payment
-  - match:
-    - uri:
         prefix: "/microservice-queue-master"
     rewrite:
       uri: "/"
