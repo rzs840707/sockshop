@@ -23,7 +23,7 @@ spec:
             cpu: 100m
             memory: 300Mi
         ports:
-        - containerPort: 80
+        - containerPort: 8079
         env:
         - name: SESSION_REDIS
           value: "true"
@@ -37,13 +37,13 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 80
+            port: 8079
           initialDelaySeconds: 300
           periodSeconds: 3
         readinessProbe:
           httpGet:
             path: /
-            port: 80
+            port: 8079
           initialDelaySeconds: 30
           periodSeconds: 3
       nodeSelector:
@@ -59,7 +59,7 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 80
+    port: 8079
   selector:
     app: front-end
 
