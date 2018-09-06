@@ -82,6 +82,8 @@ spec:
   - match:
     - uri:
         prefix: "/microservice-user"
+    rewrite:
+      uri: "/"
     route:
     - destination:
         port:
