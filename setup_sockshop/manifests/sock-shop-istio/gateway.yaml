@@ -13,3 +13,9 @@ spec:
       protocol: HTTP
     hosts:
     - "*"
+  - port:
+      number: 8081
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
