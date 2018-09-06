@@ -1,0 +1,11 @@
+apiVersion: config.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: shipping-default-v1
+  namespace: sock-shop
+spec:
+  host: shipping
+  subsets:
+  - name: v1
+    labels:
+      version: v1
