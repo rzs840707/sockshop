@@ -24,20 +24,20 @@ kubectl apply -f <(istioctl kube-inject -f manifests/shipping.yaml)kubectl
 kubectl apply -f <(istioctl kube-inject -f manifests/user-db.yaml)
 kubectl apply -f <(istioctl kube-inject -f manifests/user.yaml)
 
-kubectl create -f manifests/front-end-gw.yaml
-kubectl create -f manifests/front-end-vs.yaml
+istioctl create -f manifests/front-end-gw.yaml
+istioctl create -f manifests/front-end-vs.yaml
 
-kubectl create -f manifests/carts-db-dest.yaml
-kubectl create -f manifests/carts-dest.yaml
-kubectl create -f manifests/catalogue-db-dest.yaml
-kubectl create -f manifests/catalogue-dest.yaml
-kubectl create -f manifests/orders-db-dest.yaml
-kubectl create -f manifests/orders-dest.yaml
-kubectl create -f manifests/payment-dest.yaml
-kubectl create -f manifests/queue-master-dest.yaml
-kubectl create -f manifests/rabbitmq-dest.yaml
-kubectl create -f manifests/session-db-dest.yaml
-kubectl create -f manifests/shipping-dest.yaml
-kubectl create -f manifests/user-db-dest.yaml
-kubectl create -f manifests/user-dest.yaml
+istioctl create -f manifests/carts-db-dest.yaml
+istioctl create -f manifests/carts-dest.yaml
+istioctl create -f manifests/catalogue-db-dest.yaml
+istioctl create -f manifests/catalogue-dest.yaml
+istioctl create -f manifests/orders-db-dest.yaml
+istioctl create -f manifests/orders-dest.yaml
+istioctl create -f manifests/payment-dest.yaml
+istioctl create -f manifests/queue-master-dest.yaml
+istioctl create -f manifests/rabbitmq-dest.yaml
+istioctl create -f manifests/session-db-dest.yaml
+istioctl create -f manifests/shipping-dest.yaml
+istioctl create -f manifests/user-db-dest.yaml
+istioctl create -f manifests/user-dest.yaml
 ```
