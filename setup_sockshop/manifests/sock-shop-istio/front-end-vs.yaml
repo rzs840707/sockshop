@@ -10,15 +10,6 @@ spec:
   - front-end-gateway
   http:
   - match:
-    - headers:
-        host:
-          prefix: "user"
-    route:
-    - destination:
-        port:
-          number: 80
-        host: user
-  - match:
     - uri:
         prefix: "/"
     route:
