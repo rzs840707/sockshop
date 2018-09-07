@@ -7,7 +7,7 @@ spec:
   hosts:
   - "*"
   gateways:
-  - front-end-gateway
+  - sock-shop-gateway
   http:
   - match:
     - authority:
