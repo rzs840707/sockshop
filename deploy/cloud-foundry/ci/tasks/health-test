@@ -16,7 +16,7 @@ echo "Running jmeter health tests against $LOAD_URL..."
 #artillery run -t $LOAD_URL ./PivotalDevOpsTutorial/ci/tasks/artillery-script.yml
 # execute jmeter script
 
-jmeter -n -t ./$APP_REPO/scripts/$SCRIPT_NAME -e -l result.tlf -JSERVER_URL=$SERVER_URL -JDT_LTN=$DT_LTN -JVUCount=$VUCount -JLoopCount=$LoopCount > output.txt
+jmeter -n -t ./$APP_REPO/scripts/$SCRIPT_NAME -e -l result.tlf -JSERVER_URL=$LOAD_URL -JDT_LTN=$DT_LTN -JVUCount=$VUCount -JLoopCount=$LoopCount > output.txt
 
 # Lets do the functional validation if FUNC_VALIDATION=='yes'
 ERROR_COUNT=$(awk '/summary =/ {print $15;}' output.txt)
