@@ -2,7 +2,6 @@ apiVersion: config.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: front-end-default-v1
-  namespace: sock-shop
 spec:
   host: front-end
   subsets:
