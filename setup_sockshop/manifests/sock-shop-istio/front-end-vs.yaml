@@ -5,10 +5,21 @@ metadata:
   namespace: sock-shop
 spec:
   hosts:
-  - "front-end.*"
+  - "*"
   gateways:
   - front-end-gateway
   http:
+  - match:
+    - uri:
+        prefix: "/"
+    - headers:
+        host:
+          prefix: "user"
+    route:
+    - destination:
+        port:
+          number: 80
+        host: user
   - match:
     - uri:
         prefix: "/"
