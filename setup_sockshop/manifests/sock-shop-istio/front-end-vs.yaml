@@ -10,63 +10,56 @@ spec:
   - front-end-gateway
   http:
   - match:
-    - headers:
-        authority:
-          prefix: "carts"
+    - authority:
+        prefix: "carts"
     route:
     - destination:
         port:
           number: 80
         host: carts
   - match:
-    - headers:
-        authority:
-          prefix: "catalogue"
+    - authority:
+        prefix: "catalogue"
     route:
     - destination:
         port:
           number: 80
         host: catalogue
   - match:
-    - headers:
-        authority:
-          prefix: "orders"
+    - authority:
+        prefix: "orders"
     route:
     - destination:
         port:
           number: 80
         host: orders
   - match:
-    - headers:
-        authority:
-          prefix: "payment"
+    - authority:
+        prefix: "payment"
     route:
     - destination:
         port:
           number: 80
         host: payment
   - match:
-    - headers:
-        authority:
-          prefix: "queue-master"
+    - authority:
+        prefix: "queue-master"
     route:
     - destination:
         port:
           number: 80
         host: queue-master
   - match:
-    - headers:
-        authority:
-          prefix: "shipping"
+    - authority:
+        prefix: "shipping"
     route:
     - destination:
         port:
           number: 80
         host: shipping
   - match:
-    - headers:
-        authority:
-          prefix: "user"
+    - authority:
+        prefix:  "user"
     route:
     - destination:
         port:
