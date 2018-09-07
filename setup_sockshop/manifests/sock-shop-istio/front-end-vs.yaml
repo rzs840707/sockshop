@@ -20,7 +20,7 @@ spec:
         host: user
   - match:
     - uri:
-      prefix: "/"
+        prefix: "/"
     route:
     - destination:
         port:
