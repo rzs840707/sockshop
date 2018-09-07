@@ -10,8 +10,6 @@ spec:
   - front-end-gateway
   http:
   - match:
-    - uri:
-        prefix: "/"
     - headers:
         host:
           prefix: "user"
