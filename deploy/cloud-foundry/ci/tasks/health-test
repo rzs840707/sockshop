@@ -3,7 +3,7 @@
 set -ex
 
 # set LOAD_URL to the proper color in production, run directly against url in stage
-if [ "$PRODUCTION" -eq "true" ]; then
+if [ "$PRODUCTION" == "true" ]; then
 echo "Setting PRODUCTION url"
 export NEXT_APP_COLOR=$(cat ./current-app-info/next-app.txt)
 export LOAD_URL=$NEXT_APP_COLOR-$PCF_APP_SUFFIX.$PCF_APP_DOMAIN/
@@ -19,6 +19,8 @@ echo "Running jmeter health tests against $LOAD_URL..."
 # execute jmeter script
 
 jmeter -n -t ./$APP_REPO/scripts/$SCRIPT_NAME -e -l result.tlf -JSERVER_URL=$LOAD_URL -JDT_LTN=$DT_LTN -JVUCount=$VUCount -JLoopCount=$LoopCount > output.txt
+
+cat output.txt
 
 # Lets do the functional validation if FUNC_VALIDATION=='yes'
 ERROR_COUNT=$(awk '/summary =/ {print $15;}' output.txt)
