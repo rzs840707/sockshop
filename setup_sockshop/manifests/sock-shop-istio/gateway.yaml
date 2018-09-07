@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: front-end-gateway
+  name: sock-shop-gateway
   namespace: sock-shop
 spec:
   selector:
