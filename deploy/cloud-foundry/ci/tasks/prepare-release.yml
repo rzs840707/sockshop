@@ -15,4 +15,5 @@ outputs:
 - name: prepared-release
 
 run:
+  user: root
   path: ./git-pipeline/deploy/cloud-foundry/ci/tasks/prepare-release
