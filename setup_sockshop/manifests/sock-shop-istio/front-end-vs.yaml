@@ -11,8 +11,8 @@ spec:
   http:
   - match:
     - headers:
-        microservice:
-          exact: "user"
+        authority:
+          prefix: "user"
     route:
     - destination:
         port:
