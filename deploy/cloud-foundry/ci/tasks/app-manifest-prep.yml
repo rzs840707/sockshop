@@ -19,6 +19,12 @@ inputs:
   optional: true
 - name: git-shipping
   optional: true
+- name: git-payment
+  optional: true
+- name: git-catalogue
+  optional: true
+- name: git-front-end
+  optional: true
 - name: current-app-info
   optional: true
 
