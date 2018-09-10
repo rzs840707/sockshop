@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -ex
+
+# set LOAD_URL to the proper color in production, run directly against url in stage
+if [ "$PRODUCTION" == "true" ]; then
+echo "Setting PRODUCTION url"
+export NEXT_APP_COLOR=$(cat ./current-app-info/next-app.txt)
+export LOAD_URL=$NEXT_APP_COLOR-$PCF_APP_SUFFIX.$PCF_APP_DOMAIN/
+else
+echo "Setting STAGING url"
+export LOAD_URL=$PCF_APP_SUFFIX.$PCF_APP_DOMAIN/
+fi
+
+echo "Running jmeter health tests against $LOAD_URL..."
+
+#artillery quick --duration 10 --rate 10 $NEXT_APP_URL
+#artillery run -t $LOAD_URL ./PivotalDevOpsTutorial/ci/tasks/artillery-script.yml
+# execute jmeter script
+
+jmeter -n -t ./$APP_REPO/scripts/$SCRIPT_NAME -e -l result.tlf -JSERVER_URL=$LOAD_URL -JDT_LTN=$DT_LTN -JVUCount=$VUCount -JLoopCount=$LoopCount > output.txt
+
+cat output.txt
+
+# Lets do the functional validation if FUNC_VALIDATION=='yes'
+ERROR_COUNT=$(awk '/summary =/ {print $15;}' output.txt)
+if [ "$FUNC_VALIDATION" == "yes" ] && [ $ERROR_COUNT -gt 0 ]
+then
+    echo "More than 1 error"
+    exit 1
+fi
+
+# Lets do the performance validation if AVG_RT_VALIDATION > 0
+
+#AVG_RT=$(awk '/summary =/ {print $9;}' output.txt)
+#echo "AVG_RT = $AVG_RT"
+#if [ $AVG_RT_VALIDATION -gt 0 ] && [ $AVG_RT_VALIDATION -gt $AVG_RT ]
+#then
+#    echo "Response Time Threshold Violation: $AVG_RT > $$AVG_RT_VALIDATION"
+#    exit 1
+#fi
+

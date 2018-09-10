@@ -12,7 +12,10 @@ inputs:
   optional: true
 - name: git-orders
   optional: true
+- name: git-jmeter-as-container
+  optional: true
 - name: current-app-info
+  optional: true
 
 run:
-  path: ./git-pipeline/deploy/cloud-foundry/ci/tasks/load-tests
+  path: ./git-pipeline/deploy/cloud-foundry/ci/tasks/health-test
