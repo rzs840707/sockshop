@@ -13,6 +13,18 @@ inputs:
   optional: true
 - name: git-orders
   optional: true
+- name: git-carts
+  optional: true
+- name: git-queue-master
+  optional: true
+- name: git-shipping
+  optional: true
+- name: git-payment
+  optional: true
+- name: git-catalogue
+  optional: true
+- name: git-front-end
+  optional: true
 
 outputs:
 - name: current-app-info

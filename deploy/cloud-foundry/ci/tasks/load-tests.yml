@@ -8,11 +8,24 @@ image_resource:
 
 inputs:
 - name: git-pipeline
+- name: current-app-info
 - name: git-user
   optional: true
 - name: git-orders
   optional: true
-- name: current-app-info
+- name: git-carts
+  optional: true
+- name: git-queue-master
+  optional: true
+- name: git-shipping
+  optional: true
+- name: git-payment
+  optional: true
+- name: git-catalogue
+  optional: true
+- name: git-front-end
+  optional: true
+
 
 run:
   path: ./git-pipeline/deploy/cloud-foundry/ci/tasks/load-tests
