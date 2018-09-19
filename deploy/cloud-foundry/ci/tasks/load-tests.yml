@@ -26,6 +26,5 @@ inputs:
 - name: git-front-end
   optional: true
 
-
 run:
   path: ./git-pipeline/deploy/cloud-foundry/ci/tasks/load-tests
