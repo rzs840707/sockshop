@@ -9,6 +9,7 @@ image_resource:
 inputs:
 - name: git-pipeline
 - name: current-app-info
+- name: git-jmeter-as-container
 - name: git-user
   optional: true
 - name: git-orders
