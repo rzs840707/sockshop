@@ -2,11 +2,10 @@
 
 set -e
 
-echo "Building Release Tarball"
 pwd
 ls -la
 
-echo $APP_NAME > ./prepared-release/name
+echo $APP_NAME $(cat ./version/number) > ./prepared-release/name
 echo $(cat ./version/number) > ./prepared-release/tag
 
 echo "Name ="
