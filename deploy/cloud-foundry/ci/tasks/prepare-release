@@ -2,7 +2,7 @@
 
 set -e
 
-echo "building release tarball"
+echo "Building Release tarball"
 pwd
 ls -la
 

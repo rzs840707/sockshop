@@ -1,6 +1,10 @@
 ---
 platform: linux
 
+image_resource:
+  type: docker-image
+  source: {repository: busybox}
+
 inputs:
 - name: git-pipeline
 #- name: current-app-info
@@ -20,7 +24,6 @@ inputs:
   optional: true
 - name: git-front-end
   optional: true
-
 
 outputs:
 - name: prepared-release
