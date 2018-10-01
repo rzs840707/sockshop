@@ -6,6 +6,7 @@ image_resource:
   source: {repository: busybox}
 
 inputs:
+- name: git-pipeline
 - name: version
 - name: git-user
   optional: true

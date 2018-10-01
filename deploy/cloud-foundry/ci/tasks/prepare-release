@@ -7,7 +7,7 @@ pwd
 ls -la
 
 echo $APP_NAME > ./prepared-release/name
-echo $APP_VERSION > ./prepared-release/tag
+echo $(cat ./version/number) > ./prepared-release/tag
 
 echo "Name ="
 cat ./prepared-release/name
