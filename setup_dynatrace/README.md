@@ -7,9 +7,9 @@
 Execute in terminal:
 
 ```
-export API_URL=https://oft62130.sprint.dynatracelabs.com/api
-export API_TOKEN=qjY6KIasQ8uDh6UKM0Hwk
-export PLATFORM_AS_A_SERVICE_TOKEN=dudXKTTxScSTQpukjIq-9
+export API_URL=https://XXXXX.sprint.dynatracelabs.com/api
+export API_TOKEN=XXXXX
+export PLATFORM_AS_A_SERVICE_TOKEN=XXXXX
 export HOST_GROUP=istio
 ```
 
