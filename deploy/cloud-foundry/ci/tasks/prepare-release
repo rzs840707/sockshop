@@ -2,18 +2,14 @@
 
 set -e
 
-echo "building release tarball"
 pwd
 ls -la
 
-echo "user-service" > ./prepared-release/name
-echo "v0.0.1" > ./prepared-release/tag
+echo $APP_NAME $(cat ./version/number) > ./prepared-release/name
+echo $(cat ./version/number) > ./prepared-release/tag
 
 echo "Name ="
 cat ./prepared-release/name
 echo "Version = "
 cat ./prepared-release/tag
 
-tar -cvzf ./prepared-release/user.tgz /user
-
-ls -la ./prepared-release/user.tgz
